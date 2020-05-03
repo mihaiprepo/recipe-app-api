@@ -1,0 +1,32 @@
+# Docker compose is a tool that allows us to run our Docker image easily from our Docker location
+# So, it allows us to manage different services that make up our project (ex: python service to run and database service)
+
+# this yaml file takes all the services that make up our project
+version: "3"
+
+# python-django applictation we need as a service, 
+#'app->build->context: . ' means that we will gave a service called app, 
+# and the build section of the configuration it will set a context to the '=.' 
+# which represents the current directory
+
+# port 8000:8000 means run the service on the port 8000 on our host and 8000 on the image
+# volume allows us to get updates of the project into our Docker image in real time.
+# So, it maps a volume from our local machine into our Docker container in which we run the application
+# this means that if we add a new file or change a file or change something 
+# into the project IT WILL BE AUTOMATICALLY updated into the docker container without restarting 
+# docker to make the changes to have an effect
+# ./app:/app it will map the local app directory into the app directory of the docker image
+# "python manage.py runserver 0.0.0.0:8000" will run Django development 
+# server available on all IP addresses(0.0.0.0) that run in the Docker container
+# and it will run on port 8000 which will be mapped to the ports configuration in our local machine 
+# So, we can run our app and we can connect to it on port 8000 on our local machine
+services: 
+    app:
+        build: 
+            context: . 
+        ports: 
+            - "8000:8000"
+        volumes: 
+            - ./app:/app
+        command: > 
+            sh -c "python manage.py runserver 0.0.0.0:8000"
