@@ -1,0 +1,22 @@
+# TravisCI configuration file is a file that tells Travis what to do every time we pushed a change to our project
+
+#specify the language that the project runs in
+language: python
+# specify the version of python that you want te project to use
+python:
+    - "3.7"
+# specify the services that the project uses
+# -docker will make Travis know about all the services and services used in the docker file and docker compose
+service:
+    - docker
+
+# specify a "before-script" that will be used every time before runing the automation tasks
+before_script: pip install docker-compose
+
+# script that will run every time we push a change to github
+script:
+    - docker-compose run app sh -c "python manage.py test && flake8"
+
+# every time that will run every time we push a change to github, Travis will spin up a python service
+# running python 3.7, it will make docker image available, it will use pip to install docker-compopse
+# will run script for linting and for running the app
